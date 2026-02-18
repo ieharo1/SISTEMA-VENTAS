@@ -6,7 +6,7 @@ Proyecto relacionado con streaming.
 
 ## 📝 Descripción
 
-Proyecto para funcionalidades de streaming, posiblemente relacionado con transmisión de video/audio en vivo o bajo demanda.
+Proyecto para funcionalidades de streaming.
 
 ---
 
@@ -45,18 +45,19 @@ npm install
 npm start
 ```
 
----
-
-🧑‍💻 Isaac Haro
-
-Ingeniero en Sistemas · Full Stack · Automatización · Data
-
-📧 zackharo1@gmail.com  
-📱 098805517  
-💻 https://github.com/ieharo1
 
 ---
 
-## 📄 Licencia
+## 👨‍💻 Desarrollado por Isaac Esteban Haro Torres
 
-MIT — contribuciones bienvenidas 🚀
+**Ingeniero en Sistemas · Full Stack · Automatización · Data**
+
+- 📧 Email: zackharo1@gmail.com
+- 📱 WhatsApp: 098805517
+- 💻 GitHub: https://github.com/ieharo1
+- 🌐 Portafolio: https://ieharo1.github.io/portafolio-isaac.haro/
+
+---
+
+© 2026 Isaac Esteban Haro Torres - Todos los derechos reservados.
+
