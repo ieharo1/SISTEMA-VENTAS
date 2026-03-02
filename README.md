@@ -1,4 +1,4 @@
-# Sistema de Gestión de Ventas
+# Sistema de Ventas - FastAPI
 
 Un sistema completo de gestión de ventas desarrollado con FastAPI y MongoDB.
 
