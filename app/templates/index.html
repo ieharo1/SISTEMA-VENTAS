@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Sales Management System - Inicio{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container text-center">
+        <h1><i class="bi bi-graph-up-arrow"></i> Sistema de Gestión de Ventas</h1>
+        <p class="lead">Administra tus vendedores, ventas y metas de manera eficiente</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row text-center mb-5">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="bi bi-people text-primary" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Gestión de Vendedores</h5>
+                    <p class="card-text">Administra tu equipo de vendedores de manera eficiente</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="bi bi-currency-dollar text-success" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Control de Ventas</h5>
+                    <p class="card-text">Registra y controla todas las ventas de tu empresa</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <i class="bi bi-bullseye text-danger" style="font-size: 3rem;"></i>
+                    <h5 class="card-title mt-3">Metas Mensuales</h5>
+                    <p class="card-text">Establece y seguimiento de metas de ventas</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row text-center">
+        <div class="col-12">
+            <h3 class="mb-4">¿Listo para comenzar?</h3>
+            <a href="/login" class="btn btn-primary btn-lg me-2">
+                <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
+            </a>
+            <a href="/register" class="btn btn-outline-primary btn-lg">
+                <i class="bi bi-person-plus"></i> Registrarse
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

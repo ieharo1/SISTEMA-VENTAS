@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Ventas - Sales Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h2><i class="bi bi-currency-dollar"></i> Registro de Ventas</h2>
+        <p class="mb-0">Gestiona las ventas de tu equipo</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Nueva Venta</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/sales/create">
+                        <div class="mb-3">
+                            <label for="seller_id" class="form-label">Vendedor</label>
+                            <select class="form-select" id="seller_id" name="seller_id" required>
+                                <option value="">Seleccionar vendedor</option>
+                                {% for seller in sellers %}
+                                <option value="{{ seller.id }}">{{ seller.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="amount" class="form-label">Monto ($)</label>
+                            <input type="number" class="form-control" id="amount" name="amount" step="0.01" min="0" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="sale_date" class="form-label">Fecha</label>
+                            <input type="date" class="form-control" id="sale_date" name="sale_date" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="description" name="description" rows="2"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-check-circle"></i> Registrar Venta
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="bi bi-list"></i> Historial de Ventas</h5>
+                </div>
+                <div class="card-body">
+                    {% if sales %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Vendedor</th>
+                                    <th>Monto</th>
+                                    <th>Descripción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for sale in sales %}
+                                <tr>
+                                    <td>{{ sale.sale_date.strftime('%Y-%m-%d') }}</td>
+                                    <td>{{ sale.seller_name }}</td>
+                                    <td class="text-success fw-bold">${{ "%.2f"|format(sale.amount) }}</td>
+                                    <td>{{ sale.description or '-' }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay ventas registradas</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('sale_date').valueAsDate = new Date();
+</script>
+{% endblock %}

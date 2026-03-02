@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block title %}Metas - Sales Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h2><i class="bi bi-bullseye"></i> Metas Mensuales</h2>
+        <p class="mb-0">Establece y controla las metas de tus vendedores</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h5 class="mb-0"><i class="bi bi-plus-circle"></i> Nueva Meta</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="/goals/create">
+                        <div class="mb-3">
+                            <label for="seller_id" class="form-label">Vendedor</label>
+                            <select class="form-select" id="seller_id" name="seller_id" required>
+                                <option value="">Seleccionar vendedor</option>
+                                {% for seller in sellers %}
+                                <option value="{{ seller.id }}">{{ seller.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="month" class="form-label">Mes</label>
+                            <select class="form-select" id="month" name="month" required>
+                                <option value="1">Enero</option>
+                                <option value="2">Febrero</option>
+                                <option value="3">Marzo</option>
+                                <option value="4">Abril</option>
+                                <option value="5">Mayo</option>
+                                <option value="6">Junio</option>
+                                <option value="7">Julio</option>
+                                <option value="8">Agosto</option>
+                                <option value="9">Septiembre</option>
+                                <option value="10">Octubre</option>
+                                <option value="11">Noviembre</option>
+                                <option value="12">Diciembre</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="year" class="form-label">Año</label>
+                            <select class="form-select" id="year" name="year" required>
+                                <option value="2025">2025</option>
+                                <option value="2026" selected>2026</option>
+                                <option value="2027">2027</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="target_amount" class="form-label">Meta ($)</label>
+                            <input type="number" class="form-control" id="target_amount" name="target_amount" step="0.01" min="0" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">
+                            <i class="bi bi-check-circle"></i> Crear Meta
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="bi bi-list"></i> Metas Activas</h5>
+                </div>
+                <div class="card-body">
+                    {% if goals %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Vendedor</th>
+                                    <th>Período</th>
+                                    <th>Meta</th>
+                                    <th>Logrado</th>
+                                    <th>Progreso</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for goal in goals %}
+                                <tr>
+                                    <td>{{ goal.seller_name }}</td>
+                                    <td>{{ ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'][goal.month-1] }} {{ goal.year }}</td>
+                                    <td class="fw-bold">${{ "%.2f"|format(goal.target_amount) }}</td>
+                                    <td class="text-success">${{ "%.2f"|format(goal.achieved_amount) }}</td>
+                                    <td>
+                                        <div class="progress" style="height: 20px;">
+                                            <div class="progress-bar bg-{% if goal.percentage >= 100 %}success{% elif goal.percentage >= 75 %}info{% elif goal.percentage >= 50 %}warning{% else %}danger{% endif %}" 
+                                                 role="progressbar" 
+                                                 style="width: {{ [goal.percentage, 100]|min }}%">
+                                                {{ "%.1f"|format(goal.percentage) }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <form method="POST" action="/goals/delete/{{ goal.id }}" style="display: inline;">
+                                            <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('¿Está seguro de eliminar esta meta?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay metas establecidas</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

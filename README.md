@@ -1,63 +1,123 @@
-# Streaming
+# Sistema de Gestión de Ventas
 
-Proyecto relacionado con streaming.
+Un sistema completo de gestión de ventas desarrollado con FastAPI y MongoDB.
 
----
+## Características
 
-## 📝 Descripción
+- **Autenticación JWT**: Inicio de sesión seguro con tokens JWT
+- **Gestión de Vendedores**: CRUD completo de vendedores
+- **Registro de Ventas**: Registro y seguimiento de ventas
+- **Metas Mensuales**: Establecer y rastrear metas de ventas
+- **Dashboard**: Métricas y KPIs en tiempo real
+- **Reportes**: Ranking de vendedores y estado de metas
+- **Diseño Responsivo**: Interfaz moderna con Bootstrap 5
 
-Proyecto para funcionalidades de streaming.
+## Requisitos
 
----
+- Python 3.8+
+- MongoDB
 
-## 🎯 Para qué sirve
+## Instalación
 
-- Streaming de video
-- Transmisión en vivo
-- Reproducción multimedia
-- Integración con plataformas de streaming
+1. Clonar el repositorio:
+```bash
+cd Streaming
+```
 
----
+2. Crear un entorno virtual:
+```bash
+python -m venv venv
+source venv/bin/activate  # Linux/Mac
+# o
+venv\Scripts\activate  # Windows
+```
 
-## 🏗 Estructura
+3. Instalar dependencias:
+```bash
+pip install -r requirements.txt
+```
+
+4. Configurar variables de entorno (opcional):
+```bash
+# Crea un archivo .env con tus configuraciones
+DATABASE_URL=mongodb://localhost:27017
+DATABASE_NAME=sales_management
+SECRET_KEY=tu-secret-key-segura
+```
+
+5. Iniciar MongoDB:
+```bash
+# Asegúrate de tener MongoDB instalado y ejecutándose
+mongod
+```
+
+6. Ejecutar la aplicación:
+```bash
+uvicorn app.main:app --reload
+```
+
+7. Abrir en el navegador:
+```
+http://localhost:8000
+```
+
+## Estructura del Proyecto
 
 ```
 Streaming/
-├── src/               # Código fuente
-├── public/            # Archivos públicos
-├── package.json       # Dependencias
+├── app/
+│   ├── config.py          # Configuración de la aplicación
+│   ├── database.py        # Conexión a MongoDB
+│   ├── main.py           # Aplicación FastAPI principal
+│   ├── schemas/
+│   │   └── schemas.py    # Modelos Pydantic
+│   ├── services/
+│   │   └── auth_service.py  # Autenticación JWT
+│   ├── repositories/
+│   │   └── repository.py # Operaciones CRUD
+│   ├── routes/
+│   │   ├── auth.py       # Rutas de autenticación
+│   │   └── sales.py      # Rutas de ventas
+│   └── templates/
+│       ├── base.html     # Plantilla base
+│       ├── index.html    # Página de inicio
+│       ├── login.html   # Página de login
+│       ├── dashboard.html
+│       ├── sellers.html
+│       ├── sales.html
+│       ├── goals.html
+│       └── reports.html
+├── requirements.txt
 └── README.md
 ```
 
----
+## Colecciones de MongoDB
 
-## 💻 Requisitos
+El sistema utiliza las siguientes colecciones:
+- `users`: Usuarios del sistema
+- `sellers`: Vendedores
+- `sales`: Registro de ventas
+- `goals`: Metas mensuales
 
-- Node.js
-- Dependencias específicas del proyecto
+## Uso
 
----
+1. **Registro**: Crea una cuenta en `/register`
+2. **Login**: Inicia sesión con tus credenciales
+3. **Dashboard**: Ver métricas generales
+4. **Vendedores**: Gestiona tu equipo de vendedores
+5. **Ventas**: Registra nuevas ventas
+6. **Metas**: Establece metas mensuales
+7. **Reportes**: Analiza el rendimiento
 
-## 🚀 Uso
+## Desarrollado por
 
-```bash
-npm install
-npm start
-```
+Isaac Esteban Haro Torres
+- Ingeniero en Sistemas
+- Full Stack Developer
+- Especializado en Automatización y Data
 
-
----
-
-## 👨‍💻 Desarrollado por Isaac Esteban Haro Torres
-
-**Ingeniero en Sistemas · Full Stack · Automatización · Data**
-
-- 📧 Email: zackharo1@gmail.com
-- 📱 WhatsApp: 098805517
-- 💻 GitHub: https://github.com/ieharo1
-- 🌐 Portafolio: https://ieharo1.github.io/portafolio-isaac.haro/
-
----
-
-© 2026 Isaac Esteban Haro Torres - Todos los derechos reservados.
-
+**Contacto:**
+- Email: zackharo1@gmail.com
+- WhatsApp: 098805517
+- GitHub: https://github.com/ieharo1
+- Portafolio: https://ieharo1.github.io/portafolio-isaac.haro/

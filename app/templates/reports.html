@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+{% block title %}Reportes - Sales Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h2><i class="bi bi-file-earmark-bar-graph"></i> Reportes</h2>
+        <p class="mb-0">Análisis completo del rendimiento de ventas</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-trophy"></i> Ranking de Vendedores</h5>
+                </div>
+                <div class="card-body">
+                    {% if ranking %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Posición</th>
+                                    <th>Vendedor</th>
+                                    <th>Total Ventas</th>
+                                    <th>Número de Ventas</th>
+                                    <th>Promedio por Venta</th>
+                                    <th>Rendimiento</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for r in ranking %}
+                                <tr>
+                                    <td>
+                                        {% if r.rank == 1 %}
+                                        <span class="badge bg-warning text-dark"><i class="bi bi-trophy"></i> 1º</span>
+                                        {% elif r.rank == 2 %}
+                                        <span class="badge bg-secondary"><i class="bi bi-trophy"></i> 2º</span>
+                                        {% elif r.rank == 3 %}
+                                        <span class="badge" style="background-color: #cd7f32;"><i class="bi bi-trophy"></i> 3º</span>
+                                        {% else %}
+                                        <span class="badge bg-primary">{{ r.rank }}º</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="fw-bold">{{ r.name }}</td>
+                                    <td class="text-success fw-bold">${{ "%.2f"|format(r.total_sales) }}</td>
+                                    <td>{{ r.sale_count }}</td>
+                                    <td>${{ "%.2f"|format(r.total_sales / r.sale_count) if r.sale_count > 0 else 0 }}</td>
+                                    <td>
+                                        {% set max_sales = ranking[0].total_sales if ranking else 1 %}
+                                        {% set percentage = (r.total_sales / max_sales * 100) if max_sales > 0 else 0 %}
+                                        <div class="progress" style="height: 20px; min-width: 100px;">
+                                            <div class="progress-bar bg-{% if percentage >= 80 %}success{% elif percentage >= 60 %}info{% elif percentage >= 40 %}warning{% else %}danger{% endif %}" 
+                                                 role="progressbar" 
+                                                 style="width: {{ percentage }}%">
+                                                {{ "%.0f"|format(percentage) }}%
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay datos suficientes para generar reportes</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="bi bi-bullseye"></i> Estado de Metas</h5>
+                </div>
+                <div class="card-body">
+                    {% if goals %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Vendedor</th>
+                                    <th>Mes/Año</th>
+                                    <th>Meta</th>
+                                    <th>Logrado</th>
+                                    <th>Diferencia</th>
+                                    <th>Estado</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for goal in goals %}
+                                <tr>
+                                    <td class="fw-bold">{{ goal.seller_name }}</td>
+                                    <td>{{ ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'][goal.month-1] }} {{ goal.year }}</td>
+                                    <td>${{ "%.2f"|format(goal.target_amount) }}</td>
+                                    <td>${{ "%.2f"|format(goal.achieved_amount) }}</td>
+                                    <td class="{% if goal.achieved_amount >= goal.target_amount %}text-success{% else %}text-danger{% endif %}">
+                                        {% if goal.achieved_amount >= goal.target_amount %}
+                                        <i class="bi bi-arrow-up"></i> +${{ "%.2f"|format(goal.achieved_amount - goal.target_amount) }}
+                                        {% else %}
+                                        <i class="bi bi-arrow-down"></i> -${{ "%.2f"|format(goal.target_amount - goal.achieved_amount) }}
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if goal.percentage >= 100 %}
+                                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Cumplida</span>
+                                        {% elif goal.percentage >= 75 %}
+                                        <span class="badge bg-info">Por cumplir</span>
+                                        {% elif goal.percentage >= 50 %}
+                                        <span class="badge bg-warning">En progreso</span>
+                                        {% else %}
+                                        <span class="badge bg-danger">Baja</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay metas establecidas para mostrar</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

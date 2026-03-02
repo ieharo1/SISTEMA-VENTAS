@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Sales Management{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div class="container">
+        <h2><i class="bi bi-speedometer2"></i> Dashboard</h2>
+        <p class="mb-0">Resumen general del sistema de ventas</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mb-4">
+        <div class="col-md-4 mb-3">
+            <div class="card metric-card h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle mb-2">Ventas Totales</h6>
+                            <h2 class="card-title mb-0">${{ "%.2f"|format(metrics.total_sales) }}</h2>
+                        </div>
+                        <i class="bi bi-currency-dollar"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card metric-card h-100" style="background: linear-gradient(135deg, #27ae60, #2ecc71);">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle mb-2">Vendedores</h6>
+                            <h2 class="card-title mb-0">{{ metrics.total_sellers }}</h2>
+                        </div>
+                        <i class="bi bi-people"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card metric-card h-100" style="background: linear-gradient(135deg, #e74c3c, #c0392b);">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="card-subtitle mb-2">Metas Cumplidas</h6>
+                            <h2 class="card-title mb-0">{{ metrics.goals_achieved }}/{{ metrics.total_goals }}</h2>
+                        </div>
+                        <i class="bi bi-bullseye"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row mb-4">
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="bi bi-trophy"></i> Top Vendedores</h5>
+                </div>
+                <div class="card-body">
+                    {% if metrics.top_sellers %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Posición</th>
+                                    <th>Vendedor</th>
+                                    <th>Total Ventas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for seller in metrics.top_sellers %}
+                                <tr>
+                                    <td><span class="badge bg-{% if loop.index == 1 %}warning{% elif loop.index == 2 %}secondary{% elif loop.index == 3 %}bronze{% else %}primary{% endif %}">{{ loop.index }}</span></td>
+                                    <td>{{ seller.name }}</td>
+                                    <td>${{ "%.2f"|format(seller.total) }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay vendedores con ventas aún</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-bar-chart-line"></i> Información Adicional</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6>Promedio por Venta</h6>
+                        <h4 class="text-primary">${{ "%.2f"|format(metrics.average_sale) }}</h4>
+                    </div>
+                    <div class="mb-3">
+                        <h6>Total de Metas</h6>
+                        <h4 class="text-success">{{ metrics.total_goals }}</h4>
+                    </div>
+                    <div>
+                        <h6>Tasa de Cumplimiento</h6>
+                        {% if metrics.total_goals > 0 %}
+                        <h4 class="text-{% if (metrics.goals_achieved / metrics.total_goals * 100) >= 50 %}success{% else %}warning{% endif %}">
+                            {{ "%.0f"|format(metrics.goals_achieved / metrics.total_goals * 100) }}%
+                        </h4>
+                        {% else %}
+                        <h4 class="text-muted">N/A</h4>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="bi bi-list-ol"></i> Ranking de Vendedores</h5>
+                </div>
+                <div class="card-body">
+                    {% if ranking %}
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Vendedor</th>
+                                    <th>Total Ventas</th>
+                                    <th>Número de Ventas</th>
+                                    <th>Promedio</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for r in ranking %}
+                                <tr>
+                                    <td>
+                                        {% if r.rank == 1 %}<i class="bi bi-trophy text-warning"></i>{% elif r.rank == 2 %}<i class="bi bi-trophy text-secondary"></i>{% elif r.rank == 3 %}<i class="bi bi-trophy" style="color: #cd7f32;"></i>{% else %}{{ r.rank }}{% endif %}
+                                    </td>
+                                    <td>{{ r.name }}</td>
+                                    <td>${{ "%.2f"|format(r.total_sales) }}</td>
+                                    <td>{{ r.sale_count }}</td>
+                                    <td>${{ "%.2f"|format(r.total_sales / r.sale_count) if r.sale_count > 0 else 0 }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted text-center">No hay datos de ranking aún</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
