@@ -14,7 +14,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(
-    title="Sales Management System",
+    title="Sistema de Ventas - FastAPI",
     description="A comprehensive sales management system with JWT authentication",
     version="1.0.0",
     lifespan=lifespan,
