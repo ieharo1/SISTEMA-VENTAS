@@ -64,7 +64,6 @@ http://localhost:8000
 ## Estructura del Proyecto
 
 ```
-Streaming/
 ├── app/
 │   ├── config.py          # Configuración de la aplicación
 │   ├── database.py        # Conexión a MongoDB
